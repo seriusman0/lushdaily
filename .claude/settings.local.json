@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '{print $9, \"\\(\" $5 \"\\)\"}')",
+      "Bash(file /c/apache/htdocs/lushdaily/*.*)"
+    ]
+  }
+}
