@@ -1,6 +1,6 @@
 # Lush Daily - Freshness Delivered to Your Doorstep
 
-![Business Header](https://via.placeholder.com/1000x300.png?text=Lush+Daily+Business+Plan+2026)
+
 
 ## 📋 Ringkasan Bisnis
 **Lush Daily** adalah bisnis penyedia buah-buahan segar kualitas premium yang dipasarkan secara online. Proyek ini bertujuan memberikan solusi bagi konsumen sibuk agar bisa mendapatkan asupan nutrisi harian dengan praktis tanpa harus keluar rumah.

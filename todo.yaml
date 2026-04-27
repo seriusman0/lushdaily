@@ -1,0 +1,67 @@
+Context:
+Saya sedang membangun landing page untuk bisnis bernama Lush Daily, sebuah layanan D2C (Direct-to-Consumer) yang menjual buah-buahan segar kualitas premium secara online. Tagline bisnis ini adalah "Freshness Delivered to Your Doorstep". Target audiens utama adalah Ibu Rumah Tangga dan Wanita Karir yang mengutamakan kualitas dan praktisitas.
+
+Task:
+Buatlah satu halaman website (Single Page) menggunakan Laravel yang menampilkan katalog produk. Halaman ini harus estetik, responsif, modern, dan menggunakan clean code.
+
+Technical Requirements:
+
+Framework: Laravel (versi terbaru).
+
+Database: Tanpa Database (Statik). Data produk harus dikelola melalui Seeder atau Array Config yang kemudian di-passing ke view.
+
+Frontend: Gunakan Tailwind CSS untuk styling agar terlihat premium dan bersih.
+
+Data Produk: (Gunakan data dari list di bawah sebagai dasar pembuatan Array/Seeder).
+
+UI Components: Setiap produk ditampilkan dalam sebuah Card yang terdiri dari:
+
+Gambar Produk: Menggunakan URL gambar yang disediakan.
+
+Caption Produk: Nama buah, harga, dan deskripsi singkat.
+
+Button "Pesan Sekarang": Ketika diklik, arahkan ke WhatsApp +6285693148863 dengan pesan otomatis:
+"Halo Lush Daily, saya ingin memesan [Nama Produk] dengan harga [Harga]. Apakah stok masih tersedia?"
+
+Data Produk (Konversikan menjadi Array dalam Seeder/Controller):
+(AI, gunakan sampel data dari CSV berikut untuk mengisi katalog):
+
+Alpukat Mentega Lamtim Super | Harga: 30rb/kg | Gambar: 1.jpeg
+
+Melon Intanon Hidroponik | Harga: 30rb/kg | Gambar: 2.jpeg
+
+Anggur Autumn Adora | Harga: 70rb 900gr | Gambar: 3.jpeg
+
+Mangga Manalagi Madu | Harga: 15rb/kg | Gambar: 4.jpeg
+
+Strawberry Fresh Ciwidey | Harga: 25rb/mika | Gambar: 8.jpeg
+
+[Tambahkan produk lain dari file CSV yang saya berikan].
+
+Detailed Instruction for Implementation:
+
+Model/Data: Buat sebuah class Product sederhana atau gunakan array di dalam ProductSeeder yang menyimpan atribut: name, price, description, image_url.
+
+Controller: Buat ProductController yang mengambil data dari array tersebut dan mengirimkannya ke view welcome.blade.php.
+
+Route: Definisikan route tunggal / untuk menampilkan halaman katalog.
+
+Frontend Architecture:
+
+Gunakan layouting yang rapi dengan Header (Logo & Tagline) dan Grid System (3-4 kolom pada desktop, 1-2 kolom pada mobile).
+
+Pastikan aspek gambar konsisten (aspect-ratio square/4:3).
+
+Terapkan hover effect pada card produk untuk kesan interaktif.
+
+WhatsApp Integration: Gunakan helper urlencode() di Blade untuk memastikan format pesan WhatsApp valid dan dinamis sesuai produk yang dipilih.
+
+Output yang diharapkan:
+
+Berikan kode lengkap untuk routes/web.php.
+
+Berikan kode untuk logic data (Controller/Seeder).
+
+Berikan kode lengkap untuk file Blade (HTML + Tailwind CSS).
+
+Pastikan kode Production Ready, bebas dari hallucination, dan mengikuti best practice Laravel.
