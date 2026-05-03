@@ -245,28 +245,41 @@
         @foreach ($products as $product)
         <article id="product-{{ $product['id'] }}" class="card-hover product-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
 
-            {{-- Product Image --}}
-            <div class="relative w-full aspect-square bg-gray-100 img-skeleton overflow-hidden" style="flex-shrink:0">
+            {{-- Product Image (clickable) --}}
+            <a href="{{ $product['url'] }}" class="block relative w-full aspect-square bg-gray-100 img-skeleton overflow-hidden" style="flex-shrink:0">
                 <img src="{{ $product['image'] }}"
-                     alt="Produk Lush Daily #{{ $product['id'] }}"
+                     alt="{{ $product['name'] }}"
                      loading="lazy"
                      decoding="async"
                      class="w-full h-full object-cover absolute inset-0 opacity-0 transition-opacity duration-300"
                      onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('img-skeleton')" />
-            </div>
+            </a>
 
-            {{-- Caption + Button --}}
+            {{-- Name + Caption + Buttons --}}
             <div class="card-body">
-                <div class="caption-text text-gray-700 text-xs leading-relaxed">{!! $product['caption'] !!}</div>
-
-                {{-- WhatsApp Button --}}
-                <a href="https://wa.me/6285693148863?text={{ $product['whatsapp_message'] }}"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   class="wa-btn wa-fixed flex items-center justify-center gap-1.5 text-white text-xs font-semibold py-2 px-3 rounded-xl shadow">
-                    @include('partials.wa-icon', ['size' => 14])
-                    Pesan via WA
+                {{-- Product name --}}
+                <a href="{{ $product['url'] }}"
+                   class="text-brand-green font-semibold text-xs leading-snug hover:underline line-clamp-2">
+                    {{ $product['name'] }}
                 </a>
+
+                {{-- Description --}}
+                <div class="caption-text text-gray-600 text-xs leading-relaxed">{!! $product['caption'] !!}</div>
+
+                {{-- Buttons --}}
+                <div class="wa-fixed flex flex-col gap-1.5">
+                    <a href="{{ $product['url'] }}"
+                       class="flex items-center justify-center gap-1.5 text-brand-green text-xs font-semibold py-1.5 px-3 rounded-xl border border-brand-green hover:bg-green-50 transition">
+                        Lihat Detail
+                    </a>
+                    <a href="https://wa.me/6285693148863?text={{ $product['whatsapp_message'] }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="wa-btn flex items-center justify-center gap-1.5 text-white text-xs font-semibold py-1.5 px-3 rounded-xl shadow">
+                        @include('partials.wa-icon', ['size' => 13])
+                        Pesan via WA
+                    </a>
+                </div>
             </div>
 
         </article>

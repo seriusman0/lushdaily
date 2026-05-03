@@ -14,10 +14,12 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'caption'    => ['required', 'string', 'max:2000'],
-            'image'      => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:2048'],
-            'is_active'  => ['boolean'],
-            'sort_order' => ['integer', 'min:0', 'max:9999'],
+            'name'        => ['nullable', 'string', 'max:255'],
+            'caption'     => ['required', 'string', 'max:5000'],
+            'images'      => ['nullable', 'array'],
+            'images.*'    => ['image', 'mimes:jpeg,jpg,png,webp', 'max:3072'],
+            'is_active'   => ['boolean'],
+            'sort_order'  => ['integer', 'min:0', 'max:9999'],
         ];
     }
 }

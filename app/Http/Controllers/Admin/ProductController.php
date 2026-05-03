@@ -6,13 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProductRequest;
 use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Product;
-use Illuminate\Support\Facades\Storage;
+use App\Models\ProductImage;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::orderBy('sort_order')->orderBy('id')->paginate(20);
+        $products = Product::withCount('images')
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->paginate(20);
+
         return view('admin.products.index', compact('products'));
     }
 
@@ -25,15 +29,11 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active', true);
+        unset($data['images']);
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('images/product'), $filename);
-            $data['image'] = $filename;
-        }
+        $product = Product::create($data);
 
-        Product::create($data);
+        $this->handleImageUploads($request, $product);
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Produk berhasil ditambahkan.');
@@ -41,6 +41,7 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
+        $product->load('images');
         return view('admin.products.edit', compact('product'));
     }
 
@@ -48,18 +49,11 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active', true);
-
-        if ($request->hasFile('image')) {
-            $this->deleteOldImage($product->image);
-            $file = $request->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('images/product'), $filename);
-            $data['image'] = $filename;
-        } else {
-            unset($data['image']);
-        }
+        unset($data['images']);
 
         $product->update($data);
+
+        $this->handleImageUploads($request, $product);
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Produk berhasil diperbarui.');
@@ -73,18 +67,27 @@ class ProductController extends Controller
 
     public function restore(int $id)
     {
-        $product = Product::withTrashed()->findOrFail($id);
-        $product->restore();
+        Product::withTrashed()->findOrFail($id)->restore();
         return back()->with('success', 'Produk berhasil dipulihkan.');
     }
 
-    private function deleteOldImage(?string $filename): void
+    private function handleImageUploads($request, Product $product): void
     {
-        if ($filename && file_exists(public_path('images/product/' . $filename))) {
-            // Only delete files that were uploaded via admin (not seeded originals)
-            if (str_contains($filename, '_')) {
-                unlink(public_path('images/product/' . $filename));
-            }
+        if (! $request->hasFile('images')) {
+            return;
+        }
+
+        $nextOrder = $product->images()->max('sort_order') ?? -1;
+
+        foreach ($request->file('images') as $file) {
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images/product'), $filename);
+
+            ProductImage::create([
+                'product_id' => $product->id,
+                'path'       => $filename,
+                'sort_order' => ++$nextOrder,
+            ]);
         }
     }
 }

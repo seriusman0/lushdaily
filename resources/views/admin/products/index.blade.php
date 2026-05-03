@@ -22,7 +22,8 @@
                 <tr>
                     <th style="width:60px">#</th>
                     <th style="width:70px">Gambar</th>
-                    <th>Judul Produk</th>
+                    <th>Nama Produk</th>
+                    <th style="width:80px" class="text-center">Foto</th>
                     <th style="width:90px" class="text-center">Status</th>
                     <th style="width:80px" class="text-center">Urutan</th>
                     <th style="width:110px" class="text-center">Aksi</th>
@@ -38,7 +39,10 @@
                     </td>
                     <td>
                         <div class="font-weight-bold">{{ $product->title }}</div>
-                        <small class="text-muted">{{ mb_strimwidth($product->caption, 0, 80, '…') }}</small>
+                        <small class="text-muted">{{ mb_strimwidth(strip_tags($product->caption), 0, 80, '…') }}</small>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-info">{{ $product->images_count }} foto</span>
                     </td>
                     <td class="text-center">
                         <span class="badge badge-{{ $product->is_active ? 'success' : 'secondary' }}">
