@@ -146,8 +146,8 @@
         }
         /* Logo utama di hero content */
         .hero-logo {
-            width: 96px;
-            height: 96px;
+            width: 144px;
+            height: 144px;
             object-fit: contain;
             margin: 0 auto 1.25rem;
             display: block;
