@@ -192,7 +192,7 @@
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 items-stretch">
         @foreach ($products as $product)
-        <article class="card-hover product-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <article id="product-{{ $product['id'] }}" class="card-hover product-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
 
             {{-- Product Image --}}
             <div class="relative w-full aspect-square bg-gray-100 img-skeleton overflow-hidden" style="flex-shrink:0">
