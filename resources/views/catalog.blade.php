@@ -44,12 +44,38 @@
             box-shadow: 0 12px 28px rgba(0,0,0,0.12);
         }
 
-        .caption-text {
-            white-space: pre-line;
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
-
-        /* Bold text between asterisks */
-        .caption-text strong { font-weight: 700; }
+        .product-card .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0.75rem;
+            gap: 0.75rem;
+            min-height: 0;
+        }
+        .caption-text {
+            flex: 1;
+            white-space: pre-line;
+            word-break: normal;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            overflow-y: auto;
+            max-height: 160px;
+            scrollbar-width: thin;
+            scrollbar-color: #d1d5db transparent;
+        }
+        .caption-text::-webkit-scrollbar { width: 3px; }
+        .caption-text::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+        .caption-text strong, .caption-text b { font-weight: 700; }
+        .caption-text em { font-style: italic; }
+        .caption-text ul, .caption-text ol { padding-left: 1.2em; margin: 0.25em 0; }
+        .caption-text li { margin-bottom: 0.1em; }
+        .caption-text p { margin: 0 0 0.25em; }
+        .wa-fixed { margin-top: auto; flex-shrink: 0; }
 
         .wa-btn {
             background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
@@ -61,6 +87,24 @@
         }
         .wa-btn:active {
             transform: scale(0.98);
+        }
+
+        /* Logo float animation */
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) rotate(-2deg); }
+            25%       { transform: translateY(-8px) rotate(2deg); }
+            50%       { transform: translateY(-14px) rotate(-1deg); }
+            75%       { transform: translateY(-6px) rotate(1deg); }
+        }
+        @keyframes logoBob {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-5px); }
+        }
+        .logo-float {
+            animation: logoFloat 4s ease-in-out infinite;
+        }
+        .logo-bob {
+            animation: logoBob 2.5s ease-in-out infinite;
         }
 
         /* Skeleton loader */
@@ -84,7 +128,7 @@
         <a href="{{ route('catalog') }}" class="flex items-center gap-3 shrink-0">
             <img src="{{ asset('images/logo/lushdailylogo.png') }}"
                  alt="Lush Daily Logo"
-                 class="h-10 w-10 object-contain rounded-full" />
+                 class="h-10 w-10 object-contain logo-bob" />
             <span class="text-brand-green font-bold text-xl leading-tight tracking-tight">
                 Lush Daily
             </span>
@@ -105,7 +149,7 @@
     <div class="max-w-3xl mx-auto">
         <img src="{{ asset('images/logo/lushdailylogo.png') }}"
              alt="Lush Daily"
-             class="mx-auto mb-5 h-24 w-24 rounded-full border-4 border-white/30 shadow-xl object-contain bg-white/10 p-1" />
+             class="mx-auto mb-5 h-24 w-24 object-contain drop-shadow-xl logo-float" />
 
         <h1 class="text-3xl sm:text-4xl font-bold leading-tight mb-3">
             Buah Segar &amp; Frozen Food<br />
@@ -128,15 +172,30 @@
 {{-- ===================== CATALOG ===================== --}}
 <main id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
+    {{-- Open PO Banner --}}
+    <div class="mb-6 rounded-2xl bg-gradient-to-r from-brand-green to-brand-lime text-white px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-2 shadow-md">
+        <div class="text-2xl">🛒</div>
+        <div>
+            <p class="font-bold text-base sm:text-lg leading-tight">Open PO Buah Segar &amp; Frozen Food</p>
+            <p class="text-white/80 text-sm font-medium">Ready 1 minggu</p>
+        </div>
+    </div>
+
+    {{-- Note pengiriman --}}
+    <div class="mb-6 rounded-xl bg-brand-yellow/20 border border-brand-yellow text-brand-green px-4 py-3 text-sm font-medium flex gap-2 items-start">
+        <span class="text-base">📌</span>
+        <span><strong>Note:</strong> Hanya melayani pengiriman daerah DKI Jakarta &amp; Harga belum termasuk ongkir</span>
+    </div>
+
     <h2 class="text-2xl font-bold text-brand-green mb-2">Katalog Produk</h2>
     <p class="text-gray-500 text-sm mb-8">{{ $products->count() }} produk tersedia · Klik "Pesan via WhatsApp" untuk order</p>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 items-stretch">
         @foreach ($products as $product)
-        <article class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex flex-col">
+        <article class="card-hover product-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
 
             {{-- Product Image --}}
-            <div class="relative w-full aspect-square bg-gray-100 img-skeleton overflow-hidden">
+            <div class="relative w-full aspect-square bg-gray-100 img-skeleton overflow-hidden" style="flex-shrink:0">
                 <img src="{{ $product['image'] }}"
                      alt="Produk Lush Daily #{{ $product['id'] }}"
                      loading="lazy"
@@ -145,15 +204,15 @@
                      onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('img-skeleton')" />
             </div>
 
-            {{-- Caption --}}
-            <div class="p-3 flex-1 flex flex-col gap-3">
-                <p class="caption-text text-gray-700 text-xs leading-relaxed flex-1">{{ $product['caption'] }}</p>
+            {{-- Caption + Button --}}
+            <div class="card-body">
+                <div class="caption-text text-gray-700 text-xs leading-relaxed">{!! $product['caption'] !!}</div>
 
                 {{-- WhatsApp Button --}}
                 <a href="https://wa.me/6285693148863?text={{ $product['whatsapp_message'] }}"
                    target="_blank"
                    rel="noopener noreferrer"
-                   class="wa-btn flex items-center justify-center gap-1.5 text-white text-xs font-semibold py-2 px-3 rounded-xl shadow">
+                   class="wa-btn wa-fixed flex items-center justify-center gap-1.5 text-white text-xs font-semibold py-2 px-3 rounded-xl shadow">
                     @include('partials.wa-icon', ['size' => 14])
                     Pesan via WA
                 </a>
@@ -168,7 +227,7 @@
 <footer class="bg-brand-green text-white mt-16 py-10 px-4 text-center">
     <img src="{{ asset('images/logo/lushdailylogo.png') }}"
          alt="Lush Daily"
-         class="mx-auto mb-3 h-12 w-12 rounded-full border-2 border-white/30 object-contain bg-white/10 p-0.5" />
+         class="mx-auto mb-3 h-12 w-12 object-contain drop-shadow-md logo-bob" />
     <p class="font-bold text-lg">Lush Daily</p>
     <p class="text-white/70 text-sm mt-1">Freshness Delivered to Your Doorstep</p>
     <a href="https://wa.me/6285693148863"
