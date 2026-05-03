@@ -89,22 +89,69 @@
             transform: scale(0.98);
         }
 
-        /* Logo float animation */
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0px) rotate(-2deg); }
-            25%       { transform: translateY(-8px) rotate(2deg); }
-            50%       { transform: translateY(-14px) rotate(-1deg); }
-            75%       { transform: translateY(-6px) rotate(1deg); }
-        }
+        /* Navbar logo bob */
         @keyframes logoBob {
             0%, 100% { transform: translateY(0px); }
             50%       { transform: translateY(-5px); }
         }
-        .logo-float {
-            animation: logoFloat 4s ease-in-out infinite;
+        .logo-bob { animation: logoBob 2.5s ease-in-out infinite; }
+
+        /* ── Hero floating logo background ── */
+        .floating-item {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.13;
+            border-radius: 0;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
         }
-        .logo-bob {
-            animation: logoBob 2.5s ease-in-out infinite;
+        .item-1 {
+            width: 250px;
+            top: -20%;
+            left: -10%;
+            animation: floatComplex1 25s ease-in-out infinite alternate;
+        }
+        .item-2 {
+            width: 180px;
+            bottom: -10%;
+            right: 5%;
+            animation: floatComplex2 20s ease-in-out infinite alternate;
+        }
+        .item-3 {
+            width: 120px;
+            top: 30%;
+            left: 40%;
+            animation: floatComplex3 15s ease-in-out infinite alternate;
+        }
+        @keyframes floatComplex1 {
+            0%   { transform: translate(0, 0) rotate(0deg); }
+            50%  { transform: translate(40vw, 20vh) rotate(45deg); }
+            100% { transform: translate(10vw, 60vh) rotate(90deg); }
+        }
+        @keyframes floatComplex2 {
+            0%   { transform: translate(0, 0) rotate(0deg); }
+            50%  { transform: translate(-30vw, -30vh) rotate(-30deg); }
+            100% { transform: translate(-50vw, -10vh) rotate(-60deg); }
+        }
+        @keyframes floatComplex3 {
+            0%   { transform: translate(0, 0) scale(1); }
+            50%  { transform: translate(20vw, -15vh) scale(1.2); }
+            100% { transform: translate(-10vw, 15vh) scale(0.9); }
+        }
+        /* Hero content selalu di atas */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        /* Logo utama di hero content */
+        .hero-logo {
+            width: 96px;
+            height: 96px;
+            object-fit: contain;
+            margin: 0 auto 1.25rem;
+            display: block;
+            filter: drop-shadow(0 6px 16px rgba(0,0,0,0.25));
         }
 
         /* Skeleton loader */
@@ -146,10 +193,17 @@
 
 {{-- ===================== HERO ===================== --}}
 <section class="relative overflow-hidden bg-gradient-to-br from-brand-green via-green-700 to-brand-lime py-16 px-4 text-center text-white">
-    <div class="max-w-3xl mx-auto">
+
+    {{-- Lapisan 1: Logo melayang sebagai background (z-index rendah) --}}
+    <img src="{{ asset('images/logo/lushdailylogo.png') }}" alt="" class="floating-item item-1" aria-hidden="true">
+    <img src="{{ asset('images/logo/lushdailylogo.png') }}" alt="" class="floating-item item-2" aria-hidden="true">
+    <img src="{{ asset('images/logo/lushdailylogo.png') }}" alt="" class="floating-item item-3" aria-hidden="true">
+
+    {{-- Lapisan 2: Konten utama (z-index tinggi) --}}
+    <div class="hero-content max-w-3xl mx-auto">
         <img src="{{ asset('images/logo/lushdailylogo.png') }}"
              alt="Lush Daily"
-             class="mx-auto mb-5 h-24 w-24 object-contain drop-shadow-xl logo-float" />
+             class="hero-logo" />
 
         <h1 class="text-3xl sm:text-4xl font-bold leading-tight mb-3">
             Buah Segar &amp; Frozen Food<br />
@@ -164,9 +218,6 @@
         </a>
     </div>
 
-    {{-- Decorative blobs --}}
-    <div class="pointer-events-none absolute -top-10 -left-10 w-48 h-48 rounded-full bg-white/5"></div>
-    <div class="pointer-events-none absolute -bottom-14 -right-10 w-64 h-64 rounded-full bg-white/5"></div>
 </section>
 
 {{-- ===================== CATALOG ===================== --}}
