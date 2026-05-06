@@ -22,6 +22,7 @@
             background-color: #28a745;
         }
     </style>
+    @livewireStyles
     @stack('styles')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -173,6 +174,7 @@
 {{-- AdminLTE --}}
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/js/adminlte.min.js"></script>
 
+@livewireScripts
 @stack('scripts')
 </body>
 </html>

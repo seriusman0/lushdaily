@@ -14,7 +14,7 @@
             <div class="card-header">
                 <h3 class="card-title">Edit: {{ $product->title }}</h3>
             </div>
-            <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.products.update', $product) }}?from_page={{ request('from_page', 1) }}" method="POST" enctype="multipart/form-data">
                 @csrf @method('PUT')
                 <div class="card-body">
                     @include('admin.products._form')
@@ -23,7 +23,7 @@
                     <button type="submit" class="btn btn-info">
                         <i class="fas fa-save mr-1"></i> Update
                     </button>
-                    <a href="{{ route('admin.products.index') }}" class="btn btn-default ml-2">Batal</a>
+                    <a href="{{ route('admin.products.index') }}?page={{ request('from_page', 1) }}" class="btn btn-default ml-2">Batal</a>
                 </div>
             </form>
         </div>

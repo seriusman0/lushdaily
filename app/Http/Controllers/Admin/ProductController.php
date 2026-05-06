@@ -12,12 +12,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::withCount('images')
-            ->orderBy('sort_order')
-            ->orderBy('id')
-            ->paginate(20);
-
-        return view('admin.products.index', compact('products'));
+        return view('admin.products.index');
     }
 
     public function create()
@@ -55,7 +50,9 @@ class ProductController extends Controller
 
         $this->handleImageUploads($request, $product);
 
-        return redirect()->route('admin.products.index')
+        $page = (int) $request->query('from_page', 1);
+
+        return redirect()->route('admin.products.index', $page > 1 ? ['page' => $page] : [])
             ->with('success', 'Produk berhasil diperbarui.');
     }
 
